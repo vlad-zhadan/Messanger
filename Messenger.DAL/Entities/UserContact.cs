@@ -7,11 +7,11 @@ public class UserContact
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int ContactID { get; set; }
+    public int ContactId { get; set; }
     
-    public int PersonalProfileID { get; set; }
+    public int PersonalProfileId { get; set; }
     
-    public int ContactProfileID { get; set; }
+    public int ContactProfileId { get; set; }
     
     public Profile PersonalProfile { get; set; }
     public Profile ContactProfile { get; set; }

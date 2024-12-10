@@ -7,12 +7,12 @@ public class UserOfChat
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int UserOfChatID { get; set; }
+    public int UserOfChatId { get; set; }
     
-    public int ChatID { get; set; }
+    public int ChatId { get; set; }
     public Chat Chat { get; set; }
     
-    public int ProfileID { get; set; }
+    public int ProfileId { get; set; }
     public Profile Profile { get; set; }
     
     [Required]

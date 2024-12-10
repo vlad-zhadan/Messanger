@@ -7,7 +7,7 @@ public class Chat
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int ChatID { get; set; }
+    public int ChatId { get; set; }
     
     [MaxLength(50)]
     public string Name { get; set; }

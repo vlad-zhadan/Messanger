@@ -32,12 +32,12 @@ public class MessengerDBContext : DbContext
         {
             b.HasOne(u => u.PersonalProfile)
                 .WithMany(p => p.PersonalUserContacts)
-                .HasForeignKey(uc => uc.PersonalProfileID)
+                .HasForeignKey(uc => uc.PersonalProfileId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             b.HasOne(uc => uc.ContactProfile)
                 .WithMany(p => p.ContactUserContacts)
-                .HasForeignKey(uc => uc.ContactProfileID)
+                .HasForeignKey(uc => uc.ContactProfileId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
@@ -45,19 +45,19 @@ public class MessengerDBContext : DbContext
         {
             b.HasOne(uoc => uoc.Chat)
                 .WithMany(c => c.UsersOfChat)
-                .HasForeignKey(uc => uc.ChatID)
+                .HasForeignKey(uc => uc.ChatId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             b.HasOne(uoc => uoc.Profile)
                 .WithMany(p => p.UserOfChats)
-                .HasForeignKey(uc => uc.ProfileID)
+                .HasForeignKey(uc => uc.ProfileId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Message>()
             .HasOne(m => m.MessageOwner)
             .WithMany(uoc => uoc.Messages)
-            .HasForeignKey(m => m.MessageOwnerID);
+            .HasForeignKey(m => m.MessageOwnerId);
 
         modelBuilder.Entity<MessageReceiver>(b =>
         {
@@ -68,7 +68,7 @@ public class MessengerDBContext : DbContext
 
             b.HasOne(mr => mr.UserReceiver)
                 .WithMany(uoc => uoc.MessageReceivers)
-                .HasForeignKey(mr => mr.UserReceiverID);
+                .HasForeignKey(mr => mr.UserReceiverId);
         });
     }
 

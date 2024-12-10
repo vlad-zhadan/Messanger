@@ -7,7 +7,7 @@ public class Profile
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int ProfileID { get; set; }
+    public int ProfileId { get; set; }
     
     [Required]
     [MaxLength(50)]
@@ -23,7 +23,7 @@ public class Profile
     public string Bio { get; set; }
     
     [MaxLength(100)]
-    public string PhotoBlobID { get; set; }
+    public string PhotoBlobId { get; set; }
     
     public DateTime LastSeen { get; set; }
     

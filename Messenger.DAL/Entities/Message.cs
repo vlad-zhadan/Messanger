@@ -7,9 +7,9 @@ public class Message
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int MessageID { get; set; }
+    public int MessageId { get; set; }
     
-    public int MessageOwnerID { get; set; }
+    public int MessageOwnerId { get; set; }
     public UserOfChat MessageOwner { get; set; }
     
     // public int Forvarded { get; set; }
