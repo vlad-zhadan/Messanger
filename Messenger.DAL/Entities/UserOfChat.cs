@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Messenger.DAL.Enums;
 
-namespace Messenger.DAL.Enums;
+namespace Messenger.DAL.Entities;
 
 public class UserOfChat
 {

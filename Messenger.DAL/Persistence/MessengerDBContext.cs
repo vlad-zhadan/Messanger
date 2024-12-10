@@ -1,3 +1,4 @@
+using Messenger.DAL.Entities;
 using Messenger.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
 

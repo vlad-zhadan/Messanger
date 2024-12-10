@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Messenger.DAL.Enums;
+namespace Messenger.DAL.Entities;
 
 public class UserContact
 {

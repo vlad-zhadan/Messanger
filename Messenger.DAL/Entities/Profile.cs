@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Messenger.DAL.Enums;
+namespace Messenger.DAL.Entities;
 
 public class Profile
 {
@@ -17,6 +17,7 @@ public class Profile
     public string? LastName { get; set; }
     
     [Required]
+    [MaxLength(50)]
     public string Tag { get; set; }
     
     [MaxLength(200)]

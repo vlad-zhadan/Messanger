@@ -1,4 +1,4 @@
-using Messenger.DAL.Enums;
+using Messenger.DAL.Entities;
 using Messenger.DAL.Repositories.Interfaces.Base;
 
 namespace Messenger.DAL.Repositories.Interfaces.Specific;

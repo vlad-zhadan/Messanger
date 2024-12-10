@@ -7,15 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Constants\" />
-    <Folder Include="Mapping\" />
-    <Folder Include="MediatR\" />
+    <Folder Include="MediatR\Profile\Delete\" />
+    <Folder Include="MediatR\Profile\GetAll\" />
+    <Folder Include="MediatR\Profile\Update\" />
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Services\Realizations\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Messenger.DAL\Messenger.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="FluentResults" Version="3.16.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
   </ItemGroup>
 
 </Project>
