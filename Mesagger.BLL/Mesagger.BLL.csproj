@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Constants\" />
+    <Folder Include="Mapping\" />
+    <Folder Include="MediatR\" />
+    <Folder Include="Services\Interfaces\" />
+    <Folder Include="Services\Realizations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Messenger.DAL\Messenger.DAL.csproj" />
+  </ItemGroup>
+
 </Project>
