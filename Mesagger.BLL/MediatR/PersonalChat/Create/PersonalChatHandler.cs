@@ -62,7 +62,7 @@ public class PersonalChatHandler : IRequestHandler<PersonalChatCommand, Result<P
         await _wrapper.SaveChangesAsync();
         
         var createdPersonalChatDto = _mapper.Map<PersonalChatDto>(createdPersonalChat);
-        createdPersonalChatDto.SecondUserId = request.ChatUsers.SecondUserId;
+        // createdPersonalChatDto.SecondUserId = request.ChatUsers.SecondUserId;
         createdPersonalChatDto.Status = ChatStatus.Ok;
                                                                                                                                                                                                                                                                                                                                                                                       
         return Result.Ok(createdPersonalChatDto);

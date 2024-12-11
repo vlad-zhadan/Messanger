@@ -16,4 +16,9 @@
       <ProjectReference Include="..\Mesagger.BLL\Mesagger.BLL.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Controllers\Base\" />
+      <Folder Include="Controllers\Profile\" />
+    </ItemGroup>
+
 </Project>

@@ -16,7 +16,7 @@ public class Message
     // public int Forvarded { get; set; }
     
     [Required]
-    public DateTime TimeSended { get; set; }
+    public DateTime TimeSent { get; set; }
     
     [Required]
     public MessageStatus Status { get; set; }
@@ -25,7 +25,7 @@ public class Message
     
     public int? ContentId { get; set; }
     
-    [MaxLength(200)]
+    [MaxLength(400)]
     public string? Text { get; set; }
     
     public IEnumerable<MessageReceiver> Receivers { get; set; }
