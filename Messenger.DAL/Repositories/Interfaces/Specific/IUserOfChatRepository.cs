@@ -5,5 +5,4 @@ namespace Messenger.DAL.Repositories.Interfaces.Specific;
 
 public interface IUserOfChatRepository : IRepositoryBase<UserOfChat>
 {
-    
 }

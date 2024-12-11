@@ -24,6 +24,9 @@ public class Profile
     public string Bio { get; set; }
     
     [MaxLength(100)]
+    public string ConnectionId { get; set; }
+    
+    [MaxLength(100)]
     public string PhotoBlobId { get; set; }
     
     public DateTime LastSeen { get; set; }

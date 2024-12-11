@@ -73,5 +73,11 @@ public class MessengerDBContext : DbContext
         });
     }
 
+    public DbSet<Chat> Chats { get; set; }
+    public DbSet<Message> Messages { get; set; }
+    public DbSet<MessageReceiver> MessageReceivers { get; set; }
     public DbSet<Profile> Profiles { get; set; }
+    public DbSet<UserContact> UserContacts { get; set; }
+    public DbSet<UserOfChat> UserOfChats { get; set; }
+    
 }

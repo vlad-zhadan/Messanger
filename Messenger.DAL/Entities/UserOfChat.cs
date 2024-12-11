@@ -18,7 +18,9 @@ public class UserOfChat
     
     [Required]
     public ChatRole Role { get; set; }
-    public ChatStatus? Status { get; set; }
+    
+    [Required]
+    public ChatStatus Status { get; set; }
     
     public IEnumerable<Message> Messages { get; set; }
     public IEnumerable<MessageReceiver> MessageReceivers { get; set; }

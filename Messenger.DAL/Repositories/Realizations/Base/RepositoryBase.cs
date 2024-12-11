@@ -11,7 +11,7 @@ namespace Messenger.DAL.Repositories.Realizations.Base;
 public abstract class RepositoryBase<T> : IRepositoryBase<T>
     where T : class
 {
-    private readonly MessengerDBContext _dbContext;
+    protected readonly MessengerDBContext _dbContext;
 
     protected RepositoryBase(MessengerDBContext context)
     {
