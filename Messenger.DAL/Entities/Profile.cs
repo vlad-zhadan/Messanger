@@ -21,15 +21,15 @@ public class Profile
     public string Tag { get; set; }
     
     [MaxLength(200)]
-    public string Bio { get; set; }
+    public string? Bio { get; set; }
     
     [MaxLength(100)]
-    public string ConnectionId { get; set; }
+    public string? ConnectionId { get; set; }
     
     [MaxLength(100)]
-    public string PhotoBlobId { get; set; }
+    public string? PhotoBlobId { get; set; }
     
-    public DateTime LastSeen { get; set; }
+    public DateTime? LastSeen { get; set; }
     
     public IEnumerable<UserContact> PersonalUserContacts  { get; set; }
     public IEnumerable<UserContact> ContactUserContacts { get; set; }

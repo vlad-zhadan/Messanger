@@ -16,12 +16,16 @@ public class ChatRepository : RepositoryBase<Chat>, IChatRepository
     public async Task<Chat?> GetPersonalOrDefaultChatAsync(int firstUserId, int secondUserId)
     {
         var personalChat = await _dbContext.UserOfChats
-            .Where(uoc => uoc.ProfileId == firstUserId || uoc.ProfileId == secondUserId)
-            .GroupBy(uoc => uoc.ChatId)
-            .Select(g => g.First())
             .Include(u => u.Chat)
-            .Where(uoc => uoc.Chat.Type == ChatType.PersonalChat)
-            .Select(uoc => uoc.Chat)
+            .Where(uoc => (uoc.ProfileId == firstUserId || uoc.ProfileId == secondUserId) && uoc.Chat.Type == ChatType.PersonalChat )
+            .GroupBy(uoc => uoc.Chat)
+            .Select(g => new
+            {
+                Chat = g.Key, 
+                Count = g.Count()
+            })
+            .Where(g => g.Count == 2 )
+            .Select(g => g.Chat)
             .FirstOrDefaultAsync();
         
         return personalChat;

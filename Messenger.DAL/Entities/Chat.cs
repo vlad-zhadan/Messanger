@@ -11,13 +11,13 @@ public class Chat
     public int ChatId { get; set; }
     
     [MaxLength(50)]
-    public string Name { get; set; }
+    public string? Name { get; set; }
     
     [Required]
     public ChatType Type { get; set; }
     
     [MaxLength(100)]
-    public string Description { get; set; }
+    public string? Description { get; set; }
     
     [Required]
     public int MaxParticipants { get; set; }
@@ -25,7 +25,7 @@ public class Chat
     [Required]
     public bool IsPrivate { get; set; }
     
-    public DateTime DeletedAt { get; set; }
+    public DateTime? DeletedAt { get; set; }
     
     public IEnumerable<UserOfChat> UsersOfChat { get; set; }
 }

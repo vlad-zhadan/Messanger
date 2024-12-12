@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.DAL", "Messenger.DAL\Messenger.DAL.csproj", "{1F3A5249-9FBE-4FBF-B45D-5C8A97A8294A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mesagger.BLL", "Mesagger.BLL\Mesagger.BLL.csproj", "{70B8F387-79F7-48B4-BEB4-D0DA4A8ADF10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.BLL", "Messenger.BLL\Messenger.BLL.csproj", "{70B8F387-79F7-48B4-BEB4-D0DA4A8ADF10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.WebAPI", "Messenger.WebAPI\Messenger.WebAPI.csproj", "{BD75CBEA-91FE-4313-8F3D-7BBCA50A10E9}"
 EndProject

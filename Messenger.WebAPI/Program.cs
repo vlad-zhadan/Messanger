@@ -1,10 +1,16 @@
+using AutoMapper;
+using Mesagger.BLL.Mapping;
+using Mesagger.BLL.Mapping.PersonalChat;
+using Messenger.DAL.Persistence;
+using Messenger.DAL.Repositories.Interfaces.Base;
+using Messenger.DAL.Repositories.Realizations.Base;
 using Messenger.WebAPI.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddSignalR();
+builder.Services.AddDbContext<MessengerDBContext>(options => options.UseSqlServer(configuration.GetConnectionString("Messenger")));
 
 builder.Services.AddCors(opt =>
 {
@@ -18,6 +24,19 @@ builder.Services.AddCors(opt =>
     });
 });
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+builder.Services.AddMediatR(cfg => {
+    cfg.RegisterServicesFromAssemblies(currentAssemblies);
+});
+
+builder.Services.AddSignalR();
+builder.Services.AddAutoMapper(typeof(ProfileProfile));
+builder.Services.AddTransient<IRepositoryWrapper, RepositoryWrapper>();
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -25,9 +44,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseRouting(); 
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
+
+app.MapControllers();
 
 app.MapHub<ChatHub>("/chat");
 

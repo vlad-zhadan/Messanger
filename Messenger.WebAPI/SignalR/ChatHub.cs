@@ -20,7 +20,7 @@ public class ChatHub : Hub
     public override async Task OnConnectedAsync()
     {
         var httpContext = Context.GetHttpContext();
-        int profileId = int.Parse(httpContext.Request.Query["UserId"]);
+        int profileId = int.Parse(httpContext.Request.Query["userId"]);
         
         // need to store the connectionId + TO DO add validation for the profileId
         // need to track the userId for each connection so latter i will be able to map from the id of profile to the connection id 
