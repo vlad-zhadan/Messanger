@@ -10,6 +10,7 @@ public interface IRepositoryWrapper
     public IProfileRepository ProfileRepository { get; }
     public IUserContactRepository UserContactRepository { get; }
     public IUserOfChatRepository UserOfChatRepository { get; }
+    public IConnectionRepository ConnectionRepository { get; }
     
     public int SaveChanges();
     

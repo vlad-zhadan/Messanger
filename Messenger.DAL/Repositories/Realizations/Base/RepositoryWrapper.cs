@@ -20,6 +20,7 @@ public class RepositoryWrapper : IRepositoryWrapper
     private IProfileRepository _profileRepository;
     private IUserContactRepository _userContactRepository;
     private IUserOfChatRepository _userOfChatRepository;
+    private IConnectionRepository _connectionRepository;
     
     public IChatRepository ChatRepository => _chatRepository ??= new ChatRepository(_context);
     public IMessageRepository MessageRepository => _messageRepository ??= new MessageRepository(_context); 
@@ -27,7 +28,8 @@ public class RepositoryWrapper : IRepositoryWrapper
     public IProfileRepository ProfileRepository => _profileRepository ??= new ProfileRepository(_context);
     public IUserContactRepository UserContactRepository => _userContactRepository ??= new UserContactRepository(_context);
     public IUserOfChatRepository UserOfChatRepository => _userOfChatRepository ??= new UserOfChatRepository(_context);
-    
+    public IConnectionRepository ConnectionRepository => _connectionRepository ??= new ConnectionRepository(_context);
+
     public int SaveChanges()
     {
         return _context.SaveChanges();

@@ -4,4 +4,4 @@ using Mesagger.BLL.DTO.Profile;
 
 namespace Mesagger.BLL.MediatR.Profile.UpdateConnection;
 
-public record UpdateProfileConnectionCommand(ProfileUpdateConnectionDto ConnectionDto) : IRequest<Result<int>>;
+public record CreateProfileConnectionCommand(ProfileUpdateConnectionDto ConnectionDto) : IRequest<Result<int>>;

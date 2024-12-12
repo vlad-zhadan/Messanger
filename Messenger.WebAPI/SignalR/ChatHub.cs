@@ -1,6 +1,9 @@
+using FluentResults;
 using MediatR;
+using Mesagger.BLL.DTO.PersonalChat;
 using Mesagger.BLL.DTO.PersonalChatMessageDTO;
 using Mesagger.BLL.DTO.Profile;
+using Mesagger.BLL.MediatR.Connection.GetPersonByConnection;
 using Mesagger.BLL.MediatR.PersonalChat.GetAllForUser;
 using Mesagger.BLL.MediatR.PersonalMessage.Create;
 using Mesagger.BLL.MediatR.Profile.UpdateConnection;
@@ -24,7 +27,7 @@ public class ChatHub : Hub
         
         // need to store the connectionId + TO DO add validation for the profileId
         // need to track the userId for each connection so latter i will be able to map from the id of profile to the connection id 
-        await _mediator.Send(new UpdateProfileConnectionCommand(new ProfileUpdateConnectionDto()
+        await _mediator.Send(new CreateProfileConnectionCommand(new ProfileUpdateConnectionDto()
         {
             ProfileId = profileId,
             ConnectionId = Context.ConnectionId
@@ -73,8 +76,20 @@ public class ChatHub : Hub
     
     public async Task OnDisconnectedAsync(Exception exception)
     {
-        var chatRoomId = "chatRoom123";  // Example: dynamic value based on the user's session or preferences
-        await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatRoomId);
-        Console.WriteLine($"User {Context.ConnectionId} disconnected and removed from group {chatRoomId}");
+        // need to get user from the connection id
+        var profileId = await _mediator.Send(new GetPersonIdByConnectionQuery(Context.ConnectionId));
+
+        Result<IEnumerable<PersonalChatDto>> userChats = new ();
+        if (profileId.IsSuccess)
+        {
+            // need to get all the groups/chats and add user to them
+            userChats = await _mediator.Send(new GetAllPersonalChatsForUserQuery(profileId.Value));
+        }
+        
+        foreach (var userChat in userChats.Value)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, userChat.ChatId.ToString());
+        }
+        
     }
 }

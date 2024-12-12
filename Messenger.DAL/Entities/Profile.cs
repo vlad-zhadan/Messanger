@@ -24,15 +24,12 @@ public class Profile
     public string? Bio { get; set; }
     
     [MaxLength(100)]
-    public string? ConnectionId { get; set; }
-    
-    [MaxLength(100)]
     public string? PhotoBlobId { get; set; }
     
     public DateTime? LastSeen { get; set; }
     
     public IEnumerable<UserContact> PersonalUserContacts  { get; set; }
     public IEnumerable<UserContact> ContactUserContacts { get; set; }
-    
     public IEnumerable<UserOfChat> UserOfChats { get; set; }
+    public IEnumerable<Connection> Connections { get; set; }
 }

@@ -10,7 +10,7 @@ public class MessengerDBContext : DbContext
     {
         
     }
-    //
+    
     // public MessengerDBContext()
     // {
     // }
@@ -72,6 +72,12 @@ public class MessengerDBContext : DbContext
                 .HasForeignKey(mr => mr.UserReceiverId)
                 .OnDelete(DeleteBehavior.NoAction);
         });
+        
+        modelBuilder.Entity<Connection>()
+            .HasOne(c => c.Profile)
+            .WithMany(p => p.Connections)
+            .HasForeignKey(c => c.ProfileId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
     public DbSet<Chat> Chats { get; set; }
@@ -80,5 +86,6 @@ public class MessengerDBContext : DbContext
     public DbSet<Profile> Profiles { get; set; }
     public DbSet<UserContact> UserContacts { get; set; }
     public DbSet<UserOfChat> UserOfChats { get; set; }
+    public DbSet<Connection> Connections { get; set; }
     
 }

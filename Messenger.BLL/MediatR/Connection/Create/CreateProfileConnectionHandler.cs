@@ -1,18 +1,19 @@
 using FluentResults;
 using MediatR;
+using Messenger.DAL.Entities;
 using Messenger.DAL.Repositories.Interfaces.Base;
 
 namespace Mesagger.BLL.MediatR.Profile.UpdateConnection;
 
-public class UpdateProfileConnectionHandler : IRequestHandler<UpdateProfileConnectionCommand, Result<int>>
+public class CreateProfileConnectionHandler : IRequestHandler<CreateProfileConnectionCommand, Result<int>>
 {
     private readonly IRepositoryWrapper _wrapper;
 
-    public UpdateProfileConnectionHandler(IRepositoryWrapper wrapper)
+    public CreateProfileConnectionHandler(IRepositoryWrapper wrapper)
     {
         _wrapper = wrapper;
     }
-    public async Task<Result<int>> Handle(UpdateProfileConnectionCommand request, CancellationToken cancellationToken)
+    public async Task<Result<int>> Handle(CreateProfileConnectionCommand request, CancellationToken cancellationToken)
     {
         var profile =
             await _wrapper.ProfileRepository.GetFirstOrDefaultAsync(predicate: p =>
@@ -23,11 +24,15 @@ public class UpdateProfileConnectionHandler : IRequestHandler<UpdateProfileConne
             var errorMessage = $"Profile with id {request.ConnectionDto.ProfileId} was not found";
             return Result.Fail(errorMessage);
         }
-        
-        profile.ConnectionId = request.ConnectionDto.ConnectionId;
-        var updatedConnection = _wrapper.ProfileRepository.Update(profile);
+
+        var connection = new Connection()
+        {
+            ProfileId = profile.ProfileId,
+            ConnectionString = request.ConnectionDto.ConnectionId
+        };
+        var createdConnection = await _wrapper.ConnectionRepository.CreateAsync(connection);
         await _wrapper.SaveChangesAsync();
         
-        return Result.Ok(updatedConnection.Entity.ProfileId);
+        return Result.Ok(createdConnection.ProfileId);
     }
 }
