@@ -1,5 +1,6 @@
 using MediatR;
 using Mesagger.BLL.DTO.Profile;
+using Mesagger.BLL.MediatR.LastSeen.Get;
 using Mesagger.BLL.MediatR.Profile;
 using Mesagger.BLL.MediatR.Profile.Create;
 using Mesagger.BLL.MediatR.Profile.GetById;
@@ -25,6 +26,12 @@ public class ProfileController : BaseController
     public async Task<IActionResult> GetProfilesByNameOr(string nameOrTeg )
     {
         return HandleResult(await _mediator.Send(new GetAllProfilesByNameOrTegQuery(nameOrTeg)));
+    }
+    
+    [HttpGet("{id:int}/lastSeen")]
+    public async Task<IActionResult> GetLastSeen(int id)
+    {
+        return HandleResult(await _mediator.Send(new GetProfileLastSeenQuery(id)));
     }
     
     [HttpPost()]
