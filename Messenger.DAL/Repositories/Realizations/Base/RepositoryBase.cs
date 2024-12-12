@@ -56,6 +56,11 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T>
         _dbContext.Set<T>().Remove(entity);
     }
 
+    public async void Delete(Expression<Func<T, bool>> predicate)
+    {
+        await _dbContext.Set<T>().Where(predicate).ExecuteDeleteAsync();
+    }
+
     public void DeleteRange(IEnumerable<T> items)
     {
         _dbContext.Set<T>().RemoveRange(items);

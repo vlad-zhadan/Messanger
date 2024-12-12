@@ -1,5 +1,6 @@
 using MediatR;
 using Mesagger.BLL.DTO.PersonalChatMessageDTO;
+using Mesagger.BLL.MediatR.PersonalMessage;
 using Mesagger.BLL.MediatR.PersonalMessage.GetAllByChatId;
 using Messenger.WebAPI.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
@@ -16,5 +17,11 @@ public class PersonalMessageController : BaseController
     public async Task<ActionResult> GetPersonalMessageAsync(int id)
     {
         return HandleResult(await _mediator.Send(new GetAllPersonalMessagesByChatIdQuery(id)));
+    }
+    
+    [HttpDelete("{chatId:int}")]
+    public async Task<ActionResult> DeleteAllMessagesInPersonalChatAsync(int chatId)
+    {
+        return HandleResult(await _mediator.Send(new DeleteAllMessagesInPersonalChatCommand(chatId)));
     }
 }

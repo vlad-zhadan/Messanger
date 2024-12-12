@@ -23,6 +23,8 @@ public interface IRepositoryBase<T>
     public void UpdateRange(IEnumerable<T> items);
 
     void Delete(T entity);
+    
+    void Delete(Expression<Func<T, bool>> predicate);
 
     void DeleteRange(IEnumerable<T> items);
 
