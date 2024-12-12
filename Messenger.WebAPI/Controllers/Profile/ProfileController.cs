@@ -1,5 +1,6 @@
 using MediatR;
 using Mesagger.BLL.DTO.Profile;
+using Mesagger.BLL.MediatR.Profile;
 using Mesagger.BLL.MediatR.Profile.Create;
 using Mesagger.BLL.MediatR.Profile.GetById;
 using Mesagger.BLL.MediatR.Profile.Update;
@@ -18,6 +19,12 @@ public class ProfileController : BaseController
     public async Task<IActionResult> GetProfile(int id)
     {
         return HandleResult(await _mediator.Send(new GetProfileByIdQuery(id)));
+    }
+    
+    [HttpGet("search")]
+    public async Task<IActionResult> GetProfilesByNameOr(string nameOrTeg )
+    {
+        return HandleResult(await _mediator.Send(new GetAllProfilesByNameOrTegQuery(nameOrTeg)));
     }
     
     [HttpPost()]
