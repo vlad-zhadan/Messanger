@@ -24,10 +24,17 @@ public class MessengerDBContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
-        modelBuilder.Entity<Profile>()
-            .HasIndex(p => p.Tag)
-            .IsUnique();
+
+        modelBuilder.Entity<Profile>(b =>
+        {
+            b.HasIndex(p => p.Tag)
+                .IsUnique();
+
+            b.HasOne(p => p.User)
+                .WithOne(u => u.Profile)
+                .HasForeignKey<Profile>(p => p.UserId);
+        });
+            
 
         modelBuilder.Entity<UserContact>(b =>
         {
@@ -84,6 +91,15 @@ public class MessengerDBContext : DbContext
             .WithOne(m => m.Chat)
             .HasForeignKey<Chat>(c => c.LastMessageId)
             .IsRequired(false);
+
+
+        modelBuilder.Entity<User>(b =>
+        {
+            b.Property(u => u.Id)
+                .ValueGeneratedOnAdd();
+
+            b.HasKey(u => u.Id);
+        });
     }
 
     public DbSet<Chat> Chats { get; set; }
@@ -93,5 +109,6 @@ public class MessengerDBContext : DbContext
     public DbSet<UserContact> UserContacts { get; set; }
     public DbSet<UserOfChat> UserOfChats { get; set; }
     public DbSet<Connection> Connections { get; set; }
+    public DbSet<User> Users { get; set; }
     
 }

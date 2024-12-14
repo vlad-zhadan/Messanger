@@ -35,13 +35,13 @@ public class DeleteMessageHandler : IRequestHandler<DeleteMessageQuery, Result<i
 
             if (userWhoDelete is null)
             {
-                var errorMessage = $"User with ID {request.UserId} does not exist.";
+                var errorMessage = $"Account with ID {request.UserId} does not exist.";
                 return Result.Fail(errorMessage);
             }
 
             if (userWhoDelete.Role != ChatRole.Admin)
             {
-                var errorMessage = $"User with ID {request.UserId} does not have an admin role.";
+                var errorMessage = $"Account with ID {request.UserId} does not have an admin role.";
                 return Result.Fail(errorMessage);
             }
             

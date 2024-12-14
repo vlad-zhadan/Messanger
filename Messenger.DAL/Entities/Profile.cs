@@ -10,6 +10,11 @@ public class Profile
     public int ProfileId { get; set; }
     
     [Required]
+    public int UserId { get; set; }
+    
+    public User User { get; set; }
+    
+    [Required]
     [MaxLength(50)]
     public string FirstName { get; set; }
     

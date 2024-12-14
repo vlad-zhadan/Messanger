@@ -40,7 +40,7 @@ public class CreateMessageReceiverHandler : IRequestHandler<CreateMessageReceive
 
         if (userOfChatThatReadTheMessage is null)
         {
-            var errorMessage = $"User of chat with id: {request.messageReceiver.ChatId} was not found";
+            var errorMessage = $"Account of chat with id: {request.messageReceiver.ChatId} was not found";
             return Result.Fail(errorMessage);
         }
         

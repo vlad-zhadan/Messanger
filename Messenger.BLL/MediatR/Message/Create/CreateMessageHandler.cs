@@ -30,19 +30,19 @@ public class CreateMessageHandler : IRequestHandler<CreateMessageCommand, Result
 
         if (userOfChat is null)
         {
-            var errorMessage = $"User of chat with id {request.NewMessage.ChatId} was not found.";
+            var errorMessage = $"Account of chat with id {request.NewMessage.ChatId} was not found.";
             return Result.Fail(errorMessage);
         }
 
         if (userOfChat.Status is ChatStatus.Blocked )
         {
-            var errorMessage = $"User of chat with id {request.NewMessage.ChatId} is blocked.";
+            var errorMessage = $"Account of chat with id {request.NewMessage.ChatId} is blocked.";
             return Result.Fail(errorMessage);
         }
         
         if (userOfChat.Status is ChatStatus.Blocking )
         {
-            var errorMessage = $"User of chat with id {request.NewMessage.ChatId} is bloking another user.";
+            var errorMessage = $"Account of chat with id {request.NewMessage.ChatId} is bloking another user.";
             return Result.Fail(errorMessage);
         }
         

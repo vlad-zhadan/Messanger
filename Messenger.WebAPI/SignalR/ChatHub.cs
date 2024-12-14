@@ -241,7 +241,7 @@ public class ChatHub : Hub
         
     }
     
-    // need to add all operations that is connected with groups/chats creating/deleting 
+    // need to add all operations that is connected with groups/chats creating/deleting //UpdateProfile
     // public async Task CreatePersonalChat(PersonalChatUsersDto personalChatUsers)
     // {
     //    var newPersonalChat = await _mediator.Send(new CreatePersonalChatCommand(personalChatUsers))

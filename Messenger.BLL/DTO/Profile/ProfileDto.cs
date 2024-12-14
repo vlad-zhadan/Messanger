@@ -11,4 +11,5 @@ public class ProfileDto
     public string Tag { get; set; }
     
     public string? Bio { get; set; }
+ 
 }

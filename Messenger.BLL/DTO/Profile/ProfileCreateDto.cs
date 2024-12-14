@@ -13,6 +13,7 @@ public class ProfileCreateDto
     
     [Required(AllowEmptyStrings = false)]
     [StringLength(50, ErrorMessage = "Max tag length is 50")]
+    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Tag can only contain letters and numbers.")]
     public string Tag { get; set; }
     
     [StringLength(200, ErrorMessage = "Max bio length is 50")]

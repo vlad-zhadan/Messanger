@@ -4,6 +4,7 @@ using Messenger.DAL.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Messenger.DAL.Migrations
 {
     [DbContext(typeof(MessengerDBContext))]
-    partial class MessengerDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241214213131_AddUserTable")]
+    partial class AddUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,7 +201,7 @@ namespace Messenger.DAL.Migrations
                     b.ToTable("Profiles");
                 });
 
-            modelBuilder.Entity("Messenger.DAL.Entities.Account", b =>
+            modelBuilder.Entity("Messenger.DAL.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -250,7 +253,7 @@ namespace Messenger.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Messenger.DAL.Entities.UserContact", b =>
@@ -357,13 +360,13 @@ namespace Messenger.DAL.Migrations
 
             modelBuilder.Entity("Messenger.DAL.Entities.Profile", b =>
                 {
-                    b.HasOne("Messenger.DAL.Entities.Account", "Account")
+                    b.HasOne("Messenger.DAL.Entities.User", "User")
                         .WithOne("Profile")
                         .HasForeignKey("Messenger.DAL.Entities.Profile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Account");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Messenger.DAL.Entities.UserContact", b =>
@@ -428,7 +431,7 @@ namespace Messenger.DAL.Migrations
                     b.Navigation("UserOfChats");
                 });
 
-            modelBuilder.Entity("Messenger.DAL.Entities.Account", b =>
+            modelBuilder.Entity("Messenger.DAL.Entities.User", b =>
                 {
                     b.Navigation("Profile")
                         .IsRequired();

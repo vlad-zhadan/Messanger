@@ -30,6 +30,7 @@ public class CreateProfileHandler : IRequestHandler<CreateProfileCommand, Result
         try
         {
             var newProfile = _mapper.Map<Messenger.DAL.Entities.Profile>(request.NewProfile);
+            newProfile.UserId = request.UserId;
             var createdProfile = await _wrapper.ProfileRepository.CreateAsync(newProfile);
             await _wrapper.SaveChangesAsync();
             
