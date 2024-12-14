@@ -6,20 +6,20 @@ namespace Messenger.DAL.Persistence;
 
 public class MessengerDBContext : DbContext
 {
-    public MessengerDBContext(DbContextOptions<MessengerDBContext> options) : base(options)
+    // public MessengerDBContext(DbContextOptions<MessengerDBContext> options) : base(options)
+    // {
+    //     
+    // }
+    
+    public MessengerDBContext()
     {
-        
     }
     
-    // public MessengerDBContext()
-    // {
-    // }
-    //
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    // {
-    //     optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=Messenger;Trusted_Connection=True;");
-    //
-    // }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=Messenger;Trusted_Connection=True;");
+    
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
