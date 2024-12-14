@@ -1,4 +1,4 @@
-namespace Mesagger.BLL.DTO.Profile;
+namespace Messenger.BLL.DTO.Profile;
 
 public class ProfileUpdateConnectionDto
 {

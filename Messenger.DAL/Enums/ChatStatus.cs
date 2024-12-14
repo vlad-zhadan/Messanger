@@ -1,6 +1,6 @@
 namespace Messenger.DAL.Enums;
 
-public enum ChatStatus
+public enum  ChatStatus
 {
     Ok,
     Blocked,

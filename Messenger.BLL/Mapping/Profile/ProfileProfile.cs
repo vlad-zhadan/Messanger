@@ -1,7 +1,7 @@
 using AutoMapper;
-using Mesagger.BLL.DTO.Profile;
+using Messenger.BLL.DTO.Profile;
 
-namespace Mesagger.BLL.Mapping;
+namespace Messenger.BLL.Mapping;
 
 public class ProfileProfile : Profile
 {

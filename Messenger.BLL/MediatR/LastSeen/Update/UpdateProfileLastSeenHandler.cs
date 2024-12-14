@@ -2,7 +2,7 @@ using FluentResults;
 using MediatR;
 using Messenger.DAL.Repositories.Interfaces.Base;
 
-namespace Mesagger.BLL.MediatR.Profile.UpdateLastSeenOnConnect;
+namespace Messenger.BLL.MediatR.Profile.UpdateLastSeenOnConnect;
 
 public class UpdateProfileLastSeenHandler : IRequestHandler<UpdateProfileLastSeenCommand, Result<int>>
 {

@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using Mesagger.BLL.Attributes.General;
-using Mesagger.BLL.Constants.General;
+using Messenger.BLL.Attributes.General;
+using Messenger.BLL.Constants.General;
 
-namespace Mesagger.BLL.DTO.Profile;
+namespace Messenger.BLL.DTO.Profile;
 
 public class ProfileUpdateDto
 {

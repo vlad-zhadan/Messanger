@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Mesagger.BLL.Attributes.General;
+namespace Messenger.BLL.Attributes.General;
 
 public class GreaterOrEqualThanAttribute : ValidationAttribute
 {

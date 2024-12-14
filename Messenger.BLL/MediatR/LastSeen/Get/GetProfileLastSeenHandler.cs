@@ -1,10 +1,10 @@
 using AutoMapper;
 using FluentResults;
 using MediatR;
-using Mesagger.BLL.DTO.LastSeen;
+using Messenger.BLL.DTO.LastSeen;
 using Messenger.DAL.Repositories.Interfaces.Base;
 
-namespace Mesagger.BLL.MediatR.LastSeen.Get;
+namespace Messenger.BLL.MediatR.LastSeen.Get;
 
 public class GetProfileLastSeenHandler : IRequestHandler<GetProfileLastSeenQuery, Result<LastSeenDto>>
 {

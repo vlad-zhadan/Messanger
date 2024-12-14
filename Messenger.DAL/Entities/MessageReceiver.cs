@@ -9,7 +9,7 @@ public class MessageReceiver
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int MessageReceiverId { get; set; }
     
-    public int MessageID { get; set; }
+    public int MessageId { get; set; }
     public Message Message { get; set; }
     
     public int UserReceiverId { get; set; }

@@ -1,4 +1,4 @@
-namespace Mesagger.BLL.DTO.PersonalChat;
+namespace Messenger.BLL.DTO.PersonalChat;
 
 public class PersonalChatUsersDto
 {

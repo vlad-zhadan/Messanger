@@ -64,7 +64,7 @@ public class MessengerDBContext : DbContext
         {
             b.HasOne(mr => mr.Message)
                 .WithMany(mr => mr.Receivers)
-                .HasForeignKey(mr => mr.MessageID)
+                .HasForeignKey(mr => mr.MessageId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             b.HasOne(mr => mr.UserReceiver)
@@ -78,6 +78,12 @@ public class MessengerDBContext : DbContext
             .WithMany(p => p.Connections)
             .HasForeignKey(c => c.ProfileId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Chat>()
+            .HasOne(c => c.LastMessage)
+            .WithOne(m => m.Chat)
+            .HasForeignKey<Chat>(c => c.LastMessageId)
+            .IsRequired(false);
     }
 
     public DbSet<Chat> Chats { get; set; }

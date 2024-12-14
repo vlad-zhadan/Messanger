@@ -3,7 +3,7 @@ using MediatR;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Repositories.Interfaces.Base;
 
-namespace Mesagger.BLL.MediatR.Profile.UpdateConnection;
+namespace Messenger.BLL.MediatR.Profile.UpdateConnection;
 
 public class CreateProfileConnectionHandler : IRequestHandler<CreateProfileConnectionCommand, Result<int>>
 {
@@ -25,7 +25,7 @@ public class CreateProfileConnectionHandler : IRequestHandler<CreateProfileConne
             return Result.Fail(errorMessage);
         }
 
-        var connection = new Connection()
+        var connection = new Messenger.DAL.Entities.Connection()
         {
             ProfileId = profile.ProfileId,
             ConnectionString = request.ConnectionDto.ConnectionId

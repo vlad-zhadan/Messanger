@@ -1,6 +1,6 @@
 using AutoMapper;
-using Mesagger.BLL.Mapping;
-using Mesagger.BLL.Mapping.PersonalChat;
+using Messenger.BLL.Mapping;
+using Messenger.BLL.Mapping.PersonalChat;
 using Messenger.DAL.Persistence;
 using Messenger.DAL.Repositories.Interfaces.Base;
 using Messenger.DAL.Repositories.Realizations.Base;

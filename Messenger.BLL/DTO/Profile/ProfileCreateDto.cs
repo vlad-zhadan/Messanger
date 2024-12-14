@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Mesagger.BLL.DTO.Profile;
+namespace Messenger.BLL.DTO.Profile;
 
 public class ProfileCreateDto
 {

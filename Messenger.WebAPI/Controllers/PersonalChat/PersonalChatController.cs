@@ -1,7 +1,7 @@
 using MediatR;
-using Mesagger.BLL.DTO.PersonalChat;
-using Mesagger.BLL.MediatR.PersonalChat.Create;
-using Mesagger.BLL.MediatR.PersonalChat.Delete;
+using Messenger.BLL.DTO.PersonalChat;
+using Messenger.BLL.MediatR.PersonalChat.Create;
+using Messenger.BLL.MediatR.PersonalChat.Delete;
 using Messenger.WebAPI.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 

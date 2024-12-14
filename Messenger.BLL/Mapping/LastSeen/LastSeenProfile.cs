@@ -1,7 +1,7 @@
 using AutoMapper;
-using Mesagger.BLL.DTO.LastSeen;
+using Messenger.BLL.DTO.LastSeen;
 
-namespace Mesagger.BLL.Mapping.LastSeen;
+namespace Messenger.BLL.Mapping.LastSeen;
 
 public class LastSeenProfile : Profile
 {

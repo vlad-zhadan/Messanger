@@ -1,7 +1,7 @@
 using FluentResults;
 using MediatR;
-using Mesagger.BLL.DTO.Profile;
+using Messenger.BLL.DTO.Profile;
 
-namespace Mesagger.BLL.MediatR.Profile.UpdateConnection;
+namespace Messenger.BLL.MediatR.Profile.UpdateConnection;
 
 public record CreateProfileConnectionCommand(ProfileUpdateConnectionDto ConnectionDto) : IRequest<Result<int>>;

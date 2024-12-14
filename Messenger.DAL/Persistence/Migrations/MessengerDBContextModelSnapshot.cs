@@ -120,7 +120,7 @@ namespace Messenger.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageReceiverId"));
 
-                    b.Property<int>("MessageID")
+                    b.Property<int>("MessageId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("TimeRead")
@@ -131,7 +131,7 @@ namespace Messenger.DAL.Migrations
 
                     b.HasKey("MessageReceiverId");
 
-                    b.HasIndex("MessageID");
+                    b.HasIndex("MessageId");
 
                     b.HasIndex("UserReceiverId");
 
@@ -257,7 +257,7 @@ namespace Messenger.DAL.Migrations
                 {
                     b.HasOne("Messenger.DAL.Entities.Message", "Message")
                         .WithMany("Receivers")
-                        .HasForeignKey("MessageID")
+                        .HasForeignKey("MessageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

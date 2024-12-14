@@ -155,7 +155,7 @@ namespace Messenger.DAL.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_MessageReceivers_MessageID",
                 table: "MessageReceivers",
-                column: "MessageID");
+                column: "MessageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MessageReceivers_UserReceiverId",

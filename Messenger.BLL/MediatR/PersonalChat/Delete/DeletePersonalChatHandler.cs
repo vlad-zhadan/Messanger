@@ -3,7 +3,7 @@ using FluentResults;
 using MediatR;
 using Messenger.DAL.Repositories.Interfaces.Base;
 
-namespace Mesagger.BLL.MediatR.PersonalChat.Delete;
+namespace Messenger.BLL.MediatR.PersonalChat.Delete;
 
 public class DeletePersonalChatHandler : IRequestHandler<DeletePersonalChatCommand, Result<int>>
 {

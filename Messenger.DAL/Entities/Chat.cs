@@ -27,5 +27,13 @@ public class Chat
     
     public DateTime? DeletedAt { get; set; }
     
+    public int? LastMessageId { get; set; }
+    
+    public Message? LastMessage { get; set; }
+    
+    public DateTime CreatedAt { get; set; }
+    
+    public string? PictureId { get; set; }
+    
     public IEnumerable<UserOfChat> UsersOfChat { get; set; }
 }

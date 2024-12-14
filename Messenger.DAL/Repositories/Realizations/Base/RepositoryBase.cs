@@ -78,9 +78,11 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T>
 
     public async Task<IEnumerable<T>> GetAllAsync(
         Expression<Func<T, bool>>? predicate = default,
-        Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default)
+        Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default,
+        Expression<Func<T, object>>? orderByASC = default,
+        Expression<Func<T, object>>? orderByDESC = default)
     {
-        return await GetQueryable(predicate, include).ToListAsync();
+        return await GetQueryable(predicate, include, orderByASC: orderByASC, orderByDESC: orderByDESC).ToListAsync();
     }
     
     public PaginationResponse<T> GetAllPaginated(

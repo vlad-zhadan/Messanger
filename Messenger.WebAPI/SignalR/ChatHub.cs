@@ -1,14 +1,19 @@
 using FluentResults;
 using MediatR;
-using Mesagger.BLL.DTO.LastSeen;
-using Mesagger.BLL.DTO.PersonalChat;
-using Mesagger.BLL.DTO.PersonalChatMessageDTO;
-using Mesagger.BLL.DTO.Profile;
-using Mesagger.BLL.MediatR.Connection.GetPersonByConnection;
-using Mesagger.BLL.MediatR.PersonalChat.GetAllForUser;
-using Mesagger.BLL.MediatR.PersonalMessage.Create;
-using Mesagger.BLL.MediatR.Profile.UpdateConnection;
-using Mesagger.BLL.MediatR.Profile.UpdateLastSeenOnConnect;
+using Messenger.BLL.DTO.Chat;
+using Messenger.BLL.DTO.LastSeen;
+using Messenger.BLL.DTO.MessageReceiver;
+using Messenger.BLL.DTO.PersonalChat;
+using Messenger.BLL.DTO.PersonalChatMessageDTO;
+using Messenger.BLL.DTO.Profile;
+using Messenger.BLL.MediatR.Connection.GetPersonByConnection;
+using Messenger.BLL.MediatR.Message.GetById;
+using Messenger.BLL.MediatR.MessageReceiver.Create;
+using Messenger.BLL.MediatR.MessageReceiver.Get;
+using Messenger.BLL.MediatR.PersonalChat.GetAllForUser;
+using Messenger.BLL.MediatR.PersonalMessage.Create;
+using Messenger.BLL.MediatR.Profile.UpdateConnection;
+using Messenger.BLL.MediatR.Profile.UpdateLastSeenOnConnect;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Messenger.WebAPI.SignalR;
@@ -43,36 +48,71 @@ public class ChatHub : Hub
         }));
 
         // need to get all the groups/chats and add user to them
-        var userChats = await _mediator.Send(new GetAllPersonalChatsForUserQuery(profileId));
+        var userChats = await _mediator.Send(new GetAllChatsForUserQuery(profileId));
+        List<MessageReceiveDto> messages = new List<MessageReceiveDto>();
+        List<IEnumerable<MessageReceiverReceiveDto>> messagesReceived = new List<IEnumerable<MessageReceiverReceiveDto>>();
         
         foreach (var userChat in userChats.Value)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, userChat.ChatId.ToString());
+            
+            if (userChat.LastMessageId is null )
+            {
+                continue;
+            }
+            
+            var message = await _mediator.Send(new GetMessageByIdQuery(userChat.LastMessageId.Value));
+            if (message.IsSuccess)
+            {
+                messages.Add(message.Value);
+            }
+
+            var receivers = await _mediator.Send(new GetReceiversForMessageQuery(userChat.LastMessageId.Value));
+            if (receivers.IsSuccess)
+            {
+                messagesReceived.Add(receivers.Value);
+            }
+
+
         }
         
         // need to send all the groups/chats to user ? 
         // need to think what i need when i initially connected to the server 
         // need to rename to LoadChats
-        await Clients.Caller.SendAsync("LoadComments", userChats.Value);
+        await Clients.Caller.SendAsync("GetChats", new {
+            Chats = userChats.Value,
+            Messages = messages,
+            Receivers = messagesReceived
+        });
       
     }
 
-    public async Task SendMessage(PersonalMessageSendDto message)
+    public async Task SendMessage(MessageSendDto message)
     {
         // need to store the message
-        var savedMessage = await _mediator.Send(new CreatePersonalMessageCommand(message));
+        var savedMessage = await _mediator.Send(new CreateMessageCommand(message));
         
         // need to send the message to group 
         if (savedMessage.IsSuccess)
         {
-            await Clients.Group(message.ChatId.ToString()).SendAsync("ReceiveMessage", savedMessage.Value);
+            await Clients.Group(message.ChatId.ToString()).SendAsync("GetMessage", savedMessage.Value);
         }
         
         // need to send the some responce to the sender(?)
         
         
     }
-    public async Task SubscribeToLastSeenUpdate(int profileId)
+    public async Task MarkMessageAsReceived(MessageReceiverSendDto messageReceiver)
+    {
+        var savedMessageReceiver = await _mediator.Send(new CreateMessageReceiverCommand(messageReceiver));
+
+        if (savedMessageReceiver.IsSuccess)
+        {
+            await Clients.All.SendAsync("GetReceivedMessageInformation", savedMessageReceiver.Value);
+        }
+    }
+    
+    public async Task SubscribeToLastSeenUpdate(int profileId)                                                                                                                                                 
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, $"Profile{profileId}");
     }
@@ -88,13 +128,13 @@ public class ChatHub : Hub
     }
     
 
-    // public async Task DeleteMessage(int messageId)
+    // public async Task DeleteMessage(int messageId)                                                                                                                                                                                                                                 
     // {
     //     int deletedMessageId;
     //     await Clients.All.SendAsync("ReceiveDeletedMessage", deletedMessageId);
     // }
     //
-    // public async Task EditMessage(PersonalMessageEditDto message)
+    // public async Task EditMessage(MessageEditDto message)
     // {
     //     //some logic
     //     await Clients.All.SendAsync("ReceiveEditedMessage", message);
@@ -117,11 +157,11 @@ public class ChatHub : Hub
 
         await SendLastSeenUpdate(lastSeen);
         
-        Result<IEnumerable<PersonalChatDto>> userChats = new ();
+        Result<IEnumerable<ChatDto>> userChats = new ();
         if (profileId.IsSuccess)
         {
             // need to get all the groups/chats and add user to them
-            userChats = await _mediator.Send(new GetAllPersonalChatsForUserQuery(profileId.Value));
+            userChats = await _mediator.Send(new GetAllChatsForUserQuery(profileId.Value));
         }
         
         foreach (var userChat in userChats.Value)

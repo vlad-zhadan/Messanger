@@ -3,18 +3,18 @@ using MediatR;
 using Messenger.DAL.Enums;
 using Messenger.DAL.Repositories.Interfaces.Base;
 
-namespace Mesagger.BLL.MediatR.PersonalMessage;
+namespace Messenger.BLL.MediatR.PersonalMessage;
 
-public class DeleteAllMessagesInPersonalChatHandler : IRequestHandler<DeleteAllMessagesInPersonalChatCommand, Result<int>>
+public class DeleteAllMessagesInChatHandler : IRequestHandler<DeleteAllMessagesInChatCommand, Result<int>>
 {
     private readonly IRepositoryWrapper _wrapper;
 
-    public DeleteAllMessagesInPersonalChatHandler(IRepositoryWrapper wrapper)
+    public DeleteAllMessagesInChatHandler(IRepositoryWrapper wrapper)
     {
         _wrapper = wrapper;
     }
     
-    public async Task<Result<int>> Handle(DeleteAllMessagesInPersonalChatCommand request, CancellationToken cancellationToken)
+    public async Task<Result<int>> Handle(DeleteAllMessagesInChatCommand request, CancellationToken cancellationToken)
     {
         var chatToDeleteMessages = await _wrapper.ChatRepository.GetFirstOrDefaultAsync(predicate: c => c.ChatId == request.ChatId);
 

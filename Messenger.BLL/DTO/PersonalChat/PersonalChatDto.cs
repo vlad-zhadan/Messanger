@@ -1,12 +1,9 @@
+using Messenger.BLL.DTO.Chat;
 using Messenger.DAL.Enums;
-using Microsoft.VisualBasic.CompilerServices;
 
-namespace Mesagger.BLL.DTO.PersonalChat;
+namespace Messenger.BLL.DTO.PersonalChat;
 
-public class PersonalChatDto
+public class PersonalChatDto : ChatDto
 {
-    public int ChatId { get; set; }
-    public ChatType Type { get; set; }
-    public ChatStatus Status { get; set; }
-    // public int SecondUserId { get; set; }
+    public int SecondUserId { get; set; }
 }

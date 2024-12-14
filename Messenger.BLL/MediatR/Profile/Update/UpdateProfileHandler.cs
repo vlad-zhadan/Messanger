@@ -1,10 +1,10 @@
 using AutoMapper;
 using FluentResults;
 using MediatR;
-using Mesagger.BLL.DTO.Profile;
+using Messenger.BLL.DTO.Profile;
 using Messenger.DAL.Repositories.Interfaces.Base;
 
-namespace Mesagger.BLL.MediatR.Profile.Update;
+namespace Messenger.BLL.MediatR.Profile.Update;
 
 public class UpdateProfileHandler : IRequestHandler<UpdateProfileCommand, Result<ProfileDto>>
 {

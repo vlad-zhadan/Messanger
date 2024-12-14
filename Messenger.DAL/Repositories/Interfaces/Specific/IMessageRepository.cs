@@ -5,5 +5,5 @@ namespace Messenger.DAL.Repositories.Interfaces.Specific;
 
 public interface IMessageRepository : IRepositoryBase<Message>
 {
-    
+    public Task<int> GetNumberOfUnreadMessagesByUserOfChatAsync(int userOfChatId);
 }

@@ -1,12 +1,12 @@
 using AutoMapper;
 using FluentResults;
 using MediatR;
-using Mesagger.BLL.DTO.PersonalChat;
+using Messenger.BLL.DTO.PersonalChat;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Enums;
 using Messenger.DAL.Repositories.Interfaces.Base;
 
-namespace Mesagger.BLL.MediatR.PersonalChat.Create;
+namespace Messenger.BLL.MediatR.PersonalChat.Create;
 
 public class CreatePersonalChatHandler : IRequestHandler<CreatePersonalChatCommand, Result<PersonalChatDto>>
 {
@@ -36,6 +36,7 @@ public class CreatePersonalChatHandler : IRequestHandler<CreatePersonalChatComma
             Type = ChatType.PersonalChat,
             MaxParticipants = 2,
             IsPrivate = true,
+            CreatedAt = DateTime.Now,
         };
         try
         {
@@ -63,8 +64,7 @@ public class CreatePersonalChatHandler : IRequestHandler<CreatePersonalChatComma
             await _wrapper.SaveChangesAsync();
 
             var createdPersonalChatDto = _mapper.Map<PersonalChatDto>(createdPersonalChat);
-            // createdPersonalChatDto.SecondUserId = request.ChatUsers.SecondUserId;
-            createdPersonalChatDto.Status = ChatStatus.Ok;
+            createdPersonalChatDto.SecondUserId = request.ChatUsers.SecondUserId;
 
             return Result.Ok(createdPersonalChatDto);
         }

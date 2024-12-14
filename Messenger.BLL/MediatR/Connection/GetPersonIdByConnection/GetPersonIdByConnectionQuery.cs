@@ -2,7 +2,7 @@ using FluentResults;
 using MediatR;
 using Messenger.DAL.Repositories.Interfaces.Base;
 
-namespace Mesagger.BLL.MediatR.Connection.GetPersonByConnection;
+namespace Messenger.BLL.MediatR.Connection.GetPersonByConnection;
 
 public class GetPersonIdByConnectionQuery : IRequestHandler<GetPersonIdByConnectionCommand, Result<int>>
 {

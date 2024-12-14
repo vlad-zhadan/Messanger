@@ -1,35 +1,35 @@
 using AutoMapper;
 using FluentResults;
 using MediatR;
-using Mesagger.BLL.DTO.PersonalChatMessageDTO;
+using Messenger.BLL.DTO.PersonalChatMessageDTO;
 using Messenger.DAL.Repositories.Interfaces.Base;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mesagger.BLL.MediatR.PersonalMessage.GetAllByChatId;
+namespace Messenger.BLL.MediatR.PersonalMessage.GetAllByChatId;
 
-public class GetAllPersonalMessagesByChatIdHandler : IRequestHandler<GetAllPersonalMessagesByChatIdQuery, Result<IEnumerable<PersonalMessageDto>>>
+public class GetAllMessagesByChatIdHandler : IRequestHandler<GetAllMessagesByChatIdQuery, Result<IEnumerable<MessageReceiveDto>>>
 {
     private readonly IRepositoryWrapper _wrapper;
     private readonly IMapper _mapper;
 
 
-    public GetAllPersonalMessagesByChatIdHandler(IRepositoryWrapper wrapper, IMapper mapper)
+    public GetAllMessagesByChatIdHandler(IRepositoryWrapper wrapper, IMapper mapper)
     {
         _wrapper = wrapper;
         _mapper = mapper;
     }
-    public async Task<Result<IEnumerable<PersonalMessageDto>>> Handle(GetAllPersonalMessagesByChatIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<MessageReceiveDto>>> Handle(GetAllMessagesByChatIdQuery request, CancellationToken cancellationToken)
     {
-        var messages = await _wrapper.MessageRepository.FindAll(
+        var messages = await _wrapper.MessageRepository.GetAllAsync(
             predicate: m => m.MessageOwner.ChatId == request.ChatId, 
             include: source => source
                 .Include(m => m.MessageOwner)
                 .Include(m => m.Receivers)
-            ).ToListAsync();
+            );
 
         try
         {
-            var messagesDto = _mapper.Map<IEnumerable<PersonalMessageDto>>(messages);
+            var messagesDto = _mapper.Map<IEnumerable<MessageReceiveDto>>(messages);
             return Result.Ok(messagesDto);
         }
         catch (Exception ex)

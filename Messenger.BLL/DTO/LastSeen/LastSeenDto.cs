@@ -1,4 +1,4 @@
-namespace Mesagger.BLL.DTO.LastSeen;
+namespace Messenger.BLL.DTO.LastSeen;
 
 public class LastSeenDto
 {

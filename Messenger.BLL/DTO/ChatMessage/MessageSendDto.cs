@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations;
-using Mesagger.BLL.Attributes.General;
-using Mesagger.BLL.Constants.General;
+using Messenger.BLL.Attributes.General;
+using Messenger.BLL.Constants.General;
 
-namespace Mesagger.BLL.DTO.PersonalChatMessageDTO;
+namespace Messenger.BLL.DTO.PersonalChatMessageDTO;
 
-public class PersonalMessageSendDto
+public class MessageSendDto
 {
     [Required]
     [GreaterOrEqualThan(GeneralConstants.MinValueForId,ErrorMessage = "Id is invalid")]

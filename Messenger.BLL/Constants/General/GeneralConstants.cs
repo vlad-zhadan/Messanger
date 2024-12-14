@@ -1,4 +1,4 @@
-namespace Mesagger.BLL.Constants.General;
+namespace Messenger.BLL.Constants.General;
 
 public static class GeneralConstants
 {

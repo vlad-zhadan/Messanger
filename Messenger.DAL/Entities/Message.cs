@@ -28,5 +28,6 @@ public class Message
     [MaxLength(400)]
     public string? Text { get; set; }
     
-    public IEnumerable<MessageReceiver> Receivers { get; set; }
+    public IEnumerable<MessageReceiver> Receivers { get; set; } = new List<MessageReceiver>();
+    public Chat Chat { get; set; }
 }

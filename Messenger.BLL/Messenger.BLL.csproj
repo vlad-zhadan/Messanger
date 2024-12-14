@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="MediatR\Chat\" />
     <Folder Include="MediatR\Connection\Delete\" />
     <Folder Include="MediatR\Profile\Delete\" />
     <Folder Include="MediatR\Profile\GetAll\" />

@@ -1,10 +1,10 @@
 using MediatR;
-using Mesagger.BLL.DTO.Profile;
-using Mesagger.BLL.MediatR.LastSeen.Get;
-using Mesagger.BLL.MediatR.Profile;
-using Mesagger.BLL.MediatR.Profile.Create;
-using Mesagger.BLL.MediatR.Profile.GetById;
-using Mesagger.BLL.MediatR.Profile.Update;
+using Messenger.BLL.DTO.Profile;
+using Messenger.BLL.MediatR.LastSeen.Get;
+using Messenger.BLL.MediatR.Profile;
+using Messenger.BLL.MediatR.Profile.Create;
+using Messenger.BLL.MediatR.Profile.GetById;
+using Messenger.BLL.MediatR.Profile.Update;
 using Messenger.WebAPI.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 

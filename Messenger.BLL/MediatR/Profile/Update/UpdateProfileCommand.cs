@@ -1,8 +1,8 @@
 using FluentResults;
 using MediatR;
-using Mesagger.BLL.DTO.PersonalChat;
-using Mesagger.BLL.DTO.Profile;
+using Messenger.BLL.DTO.PersonalChat;
+using Messenger.BLL.DTO.Profile;
 
-namespace Mesagger.BLL.MediatR.Profile.Update;
+namespace Messenger.BLL.MediatR.Profile.Update;
 
 public record UpdateProfileCommand(ProfileUpdateDto UpdatedProfile) : IRequest<Result<ProfileDto>>;

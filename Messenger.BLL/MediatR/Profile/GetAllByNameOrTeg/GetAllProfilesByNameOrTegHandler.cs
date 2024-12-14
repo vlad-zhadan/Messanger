@@ -1,11 +1,11 @@
 using AutoMapper;
 using FluentResults;
 using MediatR;
-using Mesagger.BLL.DTO.Profile;
+using Messenger.BLL.DTO.Profile;
 using Messenger.DAL.Repositories.Interfaces.Base;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mesagger.BLL.MediatR.Profile;
+namespace Messenger.BLL.MediatR.Profile;
 
 public class GetAllProfilesByNameOrTegHandler : IRequestHandler<GetAllProfilesByNameOrTegQuery, Result<IEnumerable<ProfileDto>>>
 {

@@ -1,8 +1,8 @@
-using Mesagger.BLL.DTO.PersonalChat;
+using Messenger.BLL.DTO.PersonalChat;
 using Messenger.DAL.Entities;
 using Profile = AutoMapper.Profile;
 
-namespace Mesagger.BLL.Mapping.PersonalChat;
+namespace Messenger.BLL.Mapping.PersonalChat;
 
 public class PersonalChatProfile : Profile
 {
