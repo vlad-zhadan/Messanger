@@ -1,5 +1,9 @@
 using FluentResults;
 using MediatR;
+using Mesagger.BLL.MediatR.Connection.Get;
+using Mesagger.BLL.MediatR.Message.Delete;
+using Mesagger.BLL.MediatR.Message.Edit;
+using Mesagger.BLL.MediatR.PersonalChat.Block;
 using Messenger.BLL.DTO.Chat;
 using Messenger.BLL.DTO.LastSeen;
 using Messenger.BLL.DTO.MessageReceiver;
@@ -112,7 +116,7 @@ public class ChatHub : Hub
         }
     }
     
-    public async Task SubscribeToLastSeenUpdate(int profileId)                                                                                                                                                 
+    public async Task SubscribeToLastSeenUpdate(int profileId)                                                             
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, $"Profile{profileId}");
     }
@@ -126,19 +130,68 @@ public class ChatHub : Hub
     {
         await Clients.Group($"Profile{updatedLastSeenDto.ProfileId}").SendAsync("ReceiveLastSeenUpdate", updatedLastSeenDto);
     }
-    
 
-    // public async Task DeleteMessage(int messageId)                                                                                                                                                                                                                                 
-    // {
-    //     int deletedMessageId;
-    //     await Clients.All.SendAsync("ReceiveDeletedMessage", deletedMessageId);
-    // }
-    //
-    // public async Task EditMessage(MessageEditDto message)
-    // {
-    //     //some logic
-    //     await Clients.All.SendAsync("ReceiveEditedMessage", message);
-    // }
+    public async Task DeleteMessage(int messageId, int userId)
+    {
+        var groupIdWhereDeleted = await _mediator.Send(new DeleteMessageQuery(messageId, userId));
+        if (groupIdWhereDeleted.IsSuccess)
+        {
+            await Clients.Group(groupIdWhereDeleted.Value.ToString()).SendAsync("ReceiveDeletedMessage", messageId);
+            await Clients.Caller.SendAsync("ConfirmDeleteMessage", messageId);
+        }
+        else
+        {
+            await Clients.Caller.SendAsync("ConfirmDeleteMessage", -1);
+        }
+        
+    }
+    
+    public async Task EditMessage(MessageEditDto message, int userId)
+    {
+        var groupIdWhereEdited = await _mediator.Send(new EditMessageQuery(message, userId));
+        if (groupIdWhereEdited.IsSuccess)
+        {
+            await Clients.Group(groupIdWhereEdited.Value.ToString()).SendAsync("ReceiveEditedMessage", groupIdWhereEdited.Value);
+            await Clients.Caller.SendAsync("ConfirmEditedMessage", message.MessageId);
+        }
+        else
+        {
+            await Clients.Caller.SendAsync("ConfirmEditedMessage", -1);
+        }
+    }
+    
+    public async Task BlockUser(int userToBlockId, int userId)
+    {
+        var personalChatThatIsBlocked = await _mediator.Send(new BlockPersonalChatCommand(userToBlockId, userId));
+
+        if (personalChatThatIsBlocked.IsFailed)
+        {
+            await Clients.Caller.SendAsync("ConfirmBlockingPersonalChat", -1);
+            return;
+        }
+        
+        await Clients.Group(personalChatThatIsBlocked.Value.ToString()).SendAsync("ReceiveBlockedUser", userId);
+
+        var allConnectionOfUser = await _mediator.Send(new GetConectionsOfUserQuery(userId));
+        if (allConnectionOfUser.IsSuccess)
+        {
+            foreach (var connectionOfUser in allConnectionOfUser.Value)
+            {
+                await Groups.RemoveFromGroupAsync(connectionOfUser, personalChatThatIsBlocked.Value.ToString());
+            }
+        }
+        
+        var allConnectionOfBlockedUser = await _mediator.Send(new GetConectionsOfUserQuery(userToBlockId));
+        if (allConnectionOfBlockedUser.IsSuccess)
+        {
+            foreach (var connectionOfUser in allConnectionOfBlockedUser.Value)
+            {
+                await Groups.RemoveFromGroupAsync(connectionOfUser, personalChatThatIsBlocked.Value.ToString());
+            }
+        }
+        
+        await Clients.Caller.SendAsync("ConfirmBlockingPersonalChat", personalChatThatIsBlocked.Value);
+    }
     
     public async Task OnDisconnectedAsync(Exception exception)
     {

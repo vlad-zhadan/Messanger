@@ -34,6 +34,11 @@ public class GetAllChatsForUserHandler : IRequestHandler<GetAllChatsForUserQuery
             List<ChatDto> userChats = new();
             foreach (var userOfChat in userOfChats)
             {
+                if (userOfChat.Status is ChatStatus.Blocked or ChatStatus.Blocking)
+                {
+                    continue;
+                }
+                
                 var numberOfUnreadMessages = await 
                     _wrapper.MessageRepository.GetNumberOfUnreadMessagesByUserOfChatAsync(userOfChat.UserOfChatId);
                     

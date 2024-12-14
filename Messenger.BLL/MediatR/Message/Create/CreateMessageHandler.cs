@@ -33,6 +33,18 @@ public class CreateMessageHandler : IRequestHandler<CreateMessageCommand, Result
             var errorMessage = $"User of chat with id {request.NewMessage.ChatId} was not found.";
             return Result.Fail(errorMessage);
         }
+
+        if (userOfChat.Status is ChatStatus.Blocked )
+        {
+            var errorMessage = $"User of chat with id {request.NewMessage.ChatId} is blocked.";
+            return Result.Fail(errorMessage);
+        }
+        
+        if (userOfChat.Status is ChatStatus.Blocking )
+        {
+            var errorMessage = $"User of chat with id {request.NewMessage.ChatId} is bloking another user.";
+            return Result.Fail(errorMessage);
+        }
         
         var chat = await _wrapper.ChatRepository.GetFirstOrDefaultAsync(predicate: c => c.ChatId == userOfChat.ChatId);
 

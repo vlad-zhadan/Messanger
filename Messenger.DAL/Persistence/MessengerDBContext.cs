@@ -52,7 +52,7 @@ public class MessengerDBContext : DbContext
             b.HasOne(uoc => uoc.Profile)
                 .WithMany(p => p.UserOfChats)
                 .HasForeignKey(uc => uc.ProfileId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade); // i would rather in the future do the profile nullable
         });
 
         modelBuilder.Entity<Message>()
