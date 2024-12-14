@@ -13,11 +13,11 @@ public class PersonalChatController : BaseController
     {
     }
     
-    [HttpPost()]
-    public async Task<IActionResult> PersonalChat([FromBody] PersonalChatUsersDto personalChatUsers)
-    {
-        return HandleResult(await _mediator.Send(new CreatePersonalChatCommand(personalChatUsers)));
-    }
+    // [HttpPost()]
+    // public async Task<IActionResult> PersonalChat([FromBody] )
+    // {
+    //     return HandleResult();
+    // }
 
     [HttpDelete("{chatId:int}")]
     public async Task<IActionResult> DeletePersonalChat(int chatId)

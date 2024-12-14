@@ -14,7 +14,7 @@ public class PersonalMessageController : BaseController
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult> GetPersonalMessageAsync(int id)
+    public async Task<ActionResult> GetPersonalMessagesAsync(int id)
     {
         return HandleResult(await _mediator.Send(new GetAllMessagesByChatIdQuery(id)));
     }

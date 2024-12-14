@@ -198,7 +198,24 @@ public class ChatHub : Hub
         // need to get user from the connection id
         var profileId = await _mediator.Send(new GetPersonIdByConnectionCommand(Context.ConnectionId));
 
-        // need to change the status to not online 
+        if (profileId.IsFailed)
+        {
+            return;
+        }
+        
+        var allConnectionOfUser = await _mediator.Send(new GetConectionsOfUserQuery(profileId.Value));
+
+        if (allConnectionOfUser.IsFailed)
+        {
+            return;
+        }
+
+        if (allConnectionOfUser.Value.Count() > 1)
+        {
+            return;
+        }
+
+        // need to change the status to not online if person disconnects from the last device 
         // need to send this change to those who listenng (?)
         var lastSeen = new LastSeenDto()
         {
@@ -225,4 +242,8 @@ public class ChatHub : Hub
     }
     
     // need to add all operations that is connected with groups/chats creating/deleting 
+    // public async Task CreatePersonalChat(PersonalChatUsersDto personalChatUsers)
+    // {
+    //    var newPersonalChat = await _mediator.Send(new CreatePersonalChatCommand(personalChatUsers))
+    // }
 }
