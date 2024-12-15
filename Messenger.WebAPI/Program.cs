@@ -1,4 +1,6 @@
 using AutoMapper;
+using Mesagger.BLL.Security.Interface;
+using Mesagger.BLL.Security.Realizations;
 using Messenger.BLL.Mapping;
 using Messenger.BLL.Mapping.PersonalChat;
 using Messenger.DAL.Persistence;
@@ -38,6 +40,8 @@ builder.Services.AddMediatR(cfg => {
 builder.Services.AddSignalR();
 builder.Services.AddAutoMapper(typeof(ProfileProfile));
 builder.Services.AddTransient<IRepositoryWrapper, RepositoryWrapper>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 
 builder.Services.AddControllers(opt =>
 {

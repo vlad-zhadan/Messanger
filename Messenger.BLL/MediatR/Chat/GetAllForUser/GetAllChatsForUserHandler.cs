@@ -1,6 +1,7 @@
 using AutoMapper;
 using FluentResults;
 using MediatR;
+using Mesagger.BLL.Security.Interface;
 using Messenger.BLL.DTO.Chat;
 using Messenger.BLL.DTO.GroupChat;
 using Messenger.BLL.DTO.PersonalChat;
@@ -14,17 +15,27 @@ public class GetAllChatsForUserHandler : IRequestHandler<GetAllChatsForUserQuery
 {
     private readonly IRepositoryWrapper _wrapper;
     private readonly IMapper _mapper;
+    private readonly IUserAccessor _userAccessor;
 
-    public GetAllChatsForUserHandler(IRepositoryWrapper wrapper, IMapper mapper)
+    public GetAllChatsForUserHandler(IRepositoryWrapper wrapper, IMapper mapper, IUserAccessor userAccessor)
     {
         _wrapper = wrapper;
         _mapper = mapper;
+        _userAccessor = userAccessor;
     }
     
     public async Task<Result<IEnumerable<ChatDto>>> Handle(GetAllChatsForUserQuery request, CancellationToken cancellationToken)
     {
+        var userId = _userAccessor.GetCurrentUserId();
+
+        if (userId < 0)
+        {
+            var errorMessage = $"User {userId} not found";
+            return Result.Fail(errorMessage);
+        }
+        
         var userOfChats = await _wrapper.UserOfChatRepository.GetAllAsync(
-            predicate: cou => cou.ProfileId == request.UserId,
+            predicate: cou => cou.ProfileId == userId,
             include: source => source.Include(cou => cou.Chat),
             orderByDESC: uoc => uoc.Chat.LastMessage != null ? uoc.Chat.LastMessage.TimeSent : uoc.Chat.CreatedAt
         );

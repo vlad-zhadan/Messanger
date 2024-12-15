@@ -1,6 +1,7 @@
 using AutoMapper;
 using FluentResults;
 using MediatR;
+using Mesagger.BLL.Security.Interface;
 using Messenger.BLL.DTO.MessageReceiver;
 using Messenger.BLL.MediatR.MessageReceiver.Create;
 using Messenger.DAL.Repositories.Interfaces.Base;
@@ -12,14 +13,24 @@ public class CreateMessageReceiverHandler : IRequestHandler<CreateMessageReceive
 {
     private readonly IRepositoryWrapper _wrapper;
     private readonly IMapper _mapper;
+    private readonly IUserAccessor _userAccessor;
 
-    public CreateMessageReceiverHandler(IRepositoryWrapper wrapper, IMapper mapper)
+    public CreateMessageReceiverHandler(IRepositoryWrapper wrapper, IMapper mapper, IUserAccessor userAccessor)
     {
         _wrapper = wrapper;
         _mapper = mapper;
+        _userAccessor = userAccessor;
     }
     public async Task<Result<MessageReceiverReceiveDto>> Handle(CreateMessageReceiverCommand request, CancellationToken cancellationToken)
     {
+        var userId = _userAccessor.GetCurrentUserId();
+
+        if (userId < 0)
+        {
+            var errorMessage = $"User {userId} not found";
+            return Result.Fail(errorMessage);
+        }
+        
         var message = await 
             _wrapper.MessageRepository.GetFirstOrDefaultAsync(predicate: m =>
                     m.MessageId == request.messageReceiver.MessageId
@@ -35,7 +46,7 @@ public class CreateMessageReceiverHandler : IRequestHandler<CreateMessageReceive
 
         var userOfChatThatReadTheMessage = await _wrapper.UserOfChatRepository.GetFirstOrDefaultAsync(predicate:
             uoc => uoc.ChatId == request.messageReceiver.ChatId
-                   && uoc.ProfileId == request.messageReceiver.ProfileReceiverId
+                   && uoc.ProfileId == userId
         );
 
         if (userOfChatThatReadTheMessage is null)
@@ -51,8 +62,7 @@ public class CreateMessageReceiverHandler : IRequestHandler<CreateMessageReceive
         await _wrapper.SaveChangesAsync();
         
         var receiverReceiveDto = _mapper.Map<MessageReceiverReceiveDto>(savedMessageReceiver);
-        //receiverReceiveDto.ChatId = request.messageReceiver.ChatId;
-        receiverReceiveDto.ProfileReceiverId = request.messageReceiver.ProfileReceiverId;
+        receiverReceiveDto.ProfileReceiverId = userId;
         
         return Result.Ok(receiverReceiveDto);
 

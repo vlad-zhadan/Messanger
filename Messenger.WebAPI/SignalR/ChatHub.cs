@@ -4,6 +4,7 @@ using Mesagger.BLL.MediatR.Connection.Get;
 using Mesagger.BLL.MediatR.Message.Delete;
 using Mesagger.BLL.MediatR.Message.Edit;
 using Mesagger.BLL.MediatR.PersonalChat.Block;
+using Mesagger.BLL.Security.Interface;
 using Messenger.BLL.DTO.Chat;
 using Messenger.BLL.DTO.LastSeen;
 using Messenger.BLL.DTO.MessageReceiver;
@@ -25,10 +26,12 @@ namespace Messenger.WebAPI.SignalR;
 public class ChatHub : Hub
 {
     private readonly IMediator _mediator;
-    
-    public ChatHub(IMediator mediator)
+    private readonly IUserAccessor _userAccessor;
+
+    public ChatHub(IMediator mediator, IUserAccessor userAccessor)
     {
         _mediator = mediator;
+        _userAccessor = userAccessor;
     }
     
     public override async Task OnConnectedAsync()
@@ -39,7 +42,6 @@ public class ChatHub : Hub
         //need to change the status to online 
         await _mediator.Send(new UpdateProfileLastSeenCommand(new LastSeenDto()
         {
-            ProfileId = profileId,
             IsOnline = true,
         }));
         
@@ -52,7 +54,7 @@ public class ChatHub : Hub
         }));
 
         // need to get all the groups/chats and add user to them
-        var userChats = await _mediator.Send(new GetAllChatsForUserQuery(profileId));
+        var userChats = await _mediator.Send(new GetAllChatsForUserQuery());
         List<MessageReceiveDto> messages = new List<MessageReceiveDto>();
         List<IEnumerable<MessageReceiverReceiveDto>> messagesReceived = new List<IEnumerable<MessageReceiverReceiveDto>>();
         
@@ -128,12 +130,19 @@ public class ChatHub : Hub
     
     public async Task SendLastSeenUpdate(LastSeenDto updatedLastSeenDto)
     {
-        await Clients.Group($"Profile{updatedLastSeenDto.ProfileId}").SendAsync("ReceiveLastSeenUpdate", updatedLastSeenDto);
+        var userId = _userAccessor.GetCurrentUserId();
+
+        if (userId < 0)
+        {
+            return ;
+        }
+        
+        await Clients.Group($"Profile{userId}").SendAsync("ReceiveLastSeenUpdate", updatedLastSeenDto);
     }
 
-    public async Task DeleteMessage(int messageId, int userId)
+    public async Task DeleteMessage(int messageId)
     {
-        var groupIdWhereDeleted = await _mediator.Send(new DeleteMessageQuery(messageId, userId));
+        var groupIdWhereDeleted = await _mediator.Send(new DeleteMessageQuery(messageId));
         if (groupIdWhereDeleted.IsSuccess)
         {
             await Clients.Group(groupIdWhereDeleted.Value.ToString()).SendAsync("ReceiveDeletedMessage", messageId);
@@ -146,9 +155,9 @@ public class ChatHub : Hub
         
     }
     
-    public async Task EditMessage(MessageEditDto message, int userId)
+    public async Task EditMessage(MessageEditDto message)
     {
-        var groupIdWhereEdited = await _mediator.Send(new EditMessageQuery(message, userId));
+        var groupIdWhereEdited = await _mediator.Send(new EditMessageQuery(message));
         if (groupIdWhereEdited.IsSuccess)
         {
             await Clients.Group(groupIdWhereEdited.Value.ToString()).SendAsync("ReceiveEditedMessage", groupIdWhereEdited.Value);
@@ -162,7 +171,7 @@ public class ChatHub : Hub
     
     public async Task BlockUser(int userToBlockId, int userId)
     {
-        var personalChatThatIsBlocked = await _mediator.Send(new BlockPersonalChatCommand(userToBlockId, userId));
+        var personalChatThatIsBlocked = await _mediator.Send(new BlockPersonalChatCommand(userToBlockId));
 
         if (personalChatThatIsBlocked.IsFailed)
         {
@@ -219,7 +228,6 @@ public class ChatHub : Hub
         // need to send this change to those who listenng (?)
         var lastSeen = new LastSeenDto()
         {
-            ProfileId = profileId.Value,
             IsOnline = false,
             LastSeen = DateTime.Now
         };
@@ -231,7 +239,7 @@ public class ChatHub : Hub
         if (profileId.IsSuccess)
         {
             // need to get all the groups/chats and add user to them
-            userChats = await _mediator.Send(new GetAllChatsForUserQuery(profileId.Value));
+            userChats = await _mediator.Send(new GetAllChatsForUserQuery());
         }
         
         foreach (var userChat in userChats.Value)

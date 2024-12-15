@@ -4,4 +4,4 @@ using Messenger.BLL.DTO.Chat;
 
 namespace Messenger.BLL.MediatR.PersonalChat.GetAllForUser;
 
-public record GetAllChatsForUserQuery(int UserId) : IRequest<Result<IEnumerable<ChatDto>>>;
+public record GetAllChatsForUserQuery() : IRequest<Result<IEnumerable<ChatDto>>>;

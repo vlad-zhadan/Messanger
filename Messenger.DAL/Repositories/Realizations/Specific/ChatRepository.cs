@@ -26,6 +26,7 @@ public class ChatRepository : RepositoryBase<Chat>, IChatRepository
             })
             .Where(g => g.Count == 2 )
             .Select(g => g.Chat)
+            .AsNoTracking()
             .FirstOrDefaultAsync();
         
         return personalChat;

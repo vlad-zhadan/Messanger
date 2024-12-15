@@ -6,10 +6,6 @@ namespace Messenger.BLL.DTO.Profile;
 
 public class ProfileUpdateDto
 {
-    [Required]
-    [GreaterOrEqualThan(GeneralConstants.MinValueForId,ErrorMessage = "Id is invalid")]
-    public int ProfileId { get; set; }
-    
     [Required(AllowEmptyStrings = false)]
     [StringLength(50, ErrorMessage = "Max first name length is 50")]
     public string FirstName { get; set; }

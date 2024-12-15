@@ -4,4 +4,4 @@ using Messenger.BLL.DTO.PersonalChat;
 
 namespace Messenger.BLL.MediatR.PersonalChat.Create;
 
-public record CreatePersonalChatCommand(PersonalChatUsersDto ChatUsers) : IRequest<Result<PersonalChatDto>>;
+public record CreatePersonalChatCommand(int SecondUserId) : IRequest<Result<PersonalChatDto>>;

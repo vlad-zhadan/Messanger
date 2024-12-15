@@ -24,6 +24,7 @@ public class MessageRepository : RepositoryBase<Message>, IMessageRepository
                 .FirstOrDefault())
             .SelectMany(uoc => uoc.Messages)
             .Where(m => m.Receivers.All(r => r.UserReceiverId != userOfChatId))
+            .AsNoTracking()
             .CountAsync();
 
         return numberOfUnreadMessagesForUserOfChat;

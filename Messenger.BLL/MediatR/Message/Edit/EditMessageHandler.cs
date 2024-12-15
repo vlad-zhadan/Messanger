@@ -1,6 +1,7 @@
 using AutoMapper;
 using FluentResults;
 using MediatR;
+using Mesagger.BLL.Security.Interface;
 using Messenger.BLL.DTO.PersonalChatMessageDTO;
 using Messenger.DAL.Enums;
 using Messenger.DAL.Repositories.Interfaces.Base;
@@ -12,14 +13,24 @@ public class EditMessageHandler : IRequestHandler<EditMessageQuery, Result<Messa
 {
     private readonly IRepositoryWrapper _wrapper;
     private readonly IMapper _mapper;
+    private readonly IUserAccessor _userAccessor;
 
-    public EditMessageHandler(IRepositoryWrapper wrapper, IMapper mapper)
+    public EditMessageHandler(IRepositoryWrapper wrapper, IMapper mapper, IUserAccessor userAccessor)
     {
         _wrapper = wrapper;
         _mapper = mapper;
+        _userAccessor = userAccessor;
     }
     public async Task<Result<MessageReceiveDto>> Handle(EditMessageQuery request, CancellationToken cancellationToken)
     {
+        var userId = _userAccessor.GetCurrentUserId();
+
+        if (userId < 0)
+        {
+            var errorMessage = $"User {userId} not found";
+            return Result.Fail(errorMessage);
+        }
+        
         var message = await _wrapper.MessageRepository.GetFirstOrDefaultAsync(
             predicate: m => m.MessageId == request.MessageToEdit.MessageId,
             include: source => source.Include(m => m.MessageOwner));
@@ -30,24 +41,10 @@ public class EditMessageHandler : IRequestHandler<EditMessageQuery, Result<Messa
             return Result.Fail(errorMessage);
         }
 
-        if (message.MessageOwner.ProfileId != request.UserId)
+        if (message.MessageOwner.ProfileId != userId)
         {
-            var userWhoDelete = await _wrapper.UserOfChatRepository.GetFirstOrDefaultAsync(
-                predicate: uoc => uoc.ChatId == message.MessageOwner.ChatId || uoc.ProfileId == request.UserId
-            );
-
-            if (userWhoDelete is null)
-            {
-                var errorMessage = $"Account with ID {request.UserId} does not exist.";
+                var errorMessage = $"Account with ID {userId} does not have a permission to edit because it does belong to {message.MessageOwner.ProfileId}.";
                 return Result.Fail(errorMessage);
-            }
-
-            if (userWhoDelete.Role != ChatRole.Admin)
-            {
-                var errorMessage = $"Account with ID {request.UserId} does not have an admin role.";
-                return Result.Fail(errorMessage);
-            }
-            
         }
 
         message.Text = request.MessageToEdit.NewText;

@@ -1,6 +1,7 @@
 using AutoMapper;
 using FluentResults;
 using MediatR;
+using Mesagger.BLL.Security.Interface;
 using Messenger.BLL.DTO.PersonalChat;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Enums;
@@ -12,19 +13,28 @@ public class CreatePersonalChatHandler : IRequestHandler<CreatePersonalChatComma
 {
     private readonly IRepositoryWrapper _wrapper;
     private readonly IMapper _mapper;
+    private readonly IUserAccessor _userAccessor;
 
-    public CreatePersonalChatHandler(IRepositoryWrapper wrapper, IMapper mapper)
+    public CreatePersonalChatHandler(IRepositoryWrapper wrapper, IMapper mapper, IUserAccessor userAccessor)
     {
         _wrapper = wrapper;
         _mapper = mapper;
+        _userAccessor = userAccessor;
     }
     public async Task<Result<PersonalChatDto>> Handle(CreatePersonalChatCommand request, CancellationToken cancellationToken)
     {
-        var sharedСhat =
-            await _wrapper.ChatRepository.GetPersonalOrDefaultChatAsync(request.ChatUsers.FirstUserId,
-                request.ChatUsers.SecondUserId);
+        var userId = _userAccessor.GetCurrentUserId();
 
-        //need to add validation for blocking
+        if (userId < 0)
+        {
+            var errorMessage = $"User {userId} not found";
+            return Result.Fail(errorMessage);
+        }
+        
+        var sharedСhat =
+            await _wrapper.ChatRepository.GetPersonalOrDefaultChatAsync(userId,
+                request.SecondUserId);
+        
         if (sharedСhat is not null)
         {
             var errorMessage = "Personal chat is already in use.";
@@ -46,7 +56,7 @@ public class CreatePersonalChatHandler : IRequestHandler<CreatePersonalChatComma
             var newUserOfChatFirst = new UserOfChat()
             {
                 ChatId = createdPersonalChat.ChatId,
-                ProfileId = request.ChatUsers.FirstUserId,
+                ProfileId = userId,
                 Role = ChatRole.Admin,
                 Status = ChatStatus.Ok,
             };
@@ -54,7 +64,7 @@ public class CreatePersonalChatHandler : IRequestHandler<CreatePersonalChatComma
             var newUserOfChatSecond = new UserOfChat()
             {
                 ChatId = createdPersonalChat.ChatId,
-                ProfileId = request.ChatUsers.SecondUserId,
+                ProfileId = request.SecondUserId,
                 Role = ChatRole.Admin,
                 Status = ChatStatus.Ok,
             };
@@ -64,7 +74,7 @@ public class CreatePersonalChatHandler : IRequestHandler<CreatePersonalChatComma
             await _wrapper.SaveChangesAsync();
 
             var createdPersonalChatDto = _mapper.Map<PersonalChatDto>(createdPersonalChat);
-            createdPersonalChatDto.SecondUserId = request.ChatUsers.SecondUserId;
+            createdPersonalChatDto.SecondUserId = request.SecondUserId;
 
             return Result.Ok(createdPersonalChatDto);
         }

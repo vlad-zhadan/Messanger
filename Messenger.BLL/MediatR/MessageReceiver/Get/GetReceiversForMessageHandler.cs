@@ -13,7 +13,7 @@ public class GetReceiversForMessageHandler : IRequestHandler<GetReceiversForMess
     private readonly IRepositoryWrapper _wrapper;
     private readonly IMapper _mapper;
 
-    public GetReceiversForMessageHandler(IRepositoryWrapper wrapper, IMapper mapper)
+    public GetReceiversForMessageHandler(IRepositoryWrapper wrapper, IMapper mapper )
     {
         _wrapper = wrapper;
         _mapper = mapper;

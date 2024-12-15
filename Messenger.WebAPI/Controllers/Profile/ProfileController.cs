@@ -18,11 +18,11 @@ public class ProfileController : BaseController
     {
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetProfile(int id)
-    {
-        return HandleResult(await _mediator.Send(new GetProfileByIdQuery(id)));
-    }
+    // [HttpGet("{id:int}")]
+    // public async Task<IActionResult> GetProfile(int id)
+    // {
+    //     return HandleResult(await _mediator.Send(new GetProfileByIdQuery(id)));
+    // }
     
     [HttpGet("search")]
     public async Task<IActionResult> GetProfilesByNameOr(string nameOrTeg )
@@ -43,9 +43,9 @@ public class ProfileController : BaseController
         return HandleResult(await _mediator.Send(new CheckProfileTagQuery(tag)));
     }
     
-    [HttpPut()]
-    public async Task<IActionResult> UpdateProfile([FromBody] ProfileUpdateDto updatedProfile)
-    {
-        return HandleResult(await _mediator.Send(new UpdateProfileCommand(updatedProfile)));
-    }
+    // [HttpPut()]
+    // public async Task<IActionResult> UpdateProfile([FromBody] ProfileUpdateDto updatedProfile)
+    // {
+    //     return HandleResult(await _mediator.Send(new UpdateProfileCommand(updatedProfile)));
+    // }
 }

@@ -9,10 +9,6 @@ public class MessageReceiverSendDto
     [Required]
     [GreaterOrEqualThan(GeneralConstants.MinValueForId,ErrorMessage = "Id is invalid")]
     public int MessageId { get; set; }
-
-    [Required]
-    [GreaterOrEqualThan(GeneralConstants.MinValueForId,ErrorMessage = "Id is invalid")]
-    public int ProfileReceiverId { get; set; }
     
     [Required]
     [GreaterOrEqualThan(GeneralConstants.MinValueForId,ErrorMessage = "Id is invalid")]
